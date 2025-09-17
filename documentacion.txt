@@ -1,0 +1,105 @@
+📄 Documentación del Proyecto Instituto
+
+1️⃣ Base de Datos
+
+- Nombre de la base de datos: instituto
+- Tablas creadas:
+  1. estudiantes
+     - id (INT, PK, AUTO_INCREMENT)  
+     - nombre (VARCHAR)  
+     - email (VARCHAR)  
+  2. cursos
+     - id (INT, PK, AUTO_INCREMENT)  
+     - nombre (VARCHAR)  
+     - descripcion (VARCHAR)  
+  3. inscripciones (tabla intermedia para relación muchos a muchos)
+     - id_inscripcion (INT, PK, AUTO_INCREMENT)  
+     - id_estudiante (INT, FK → estudiantes.id)  
+     - id_curso (INT, FK → cursos.id)  
+     - fecha (DATE)  
+
+Nota: La relación entre estudiantes y cursos es de muchos a muchos, por eso se creó la tabla inscripciones.
+
+Se puede adjuntar el dump de la base de datos para recrear las tablas rápidamente.
+
+2️⃣ Configuración del proyecto
+
+- Inicializar el proyecto en Visual Studio.  
+- Backend: Node.js con Express, Nodemon y MySQL2
+  npm init -y
+  npm i express nodemon mysql2
+
+3️⃣ Estructura del Backend
+
+3.1 Carpeta config
+- Archivo: database.js  
+- Contiene la configuración de la conexión a la base de datos usando mysql2.
+
+const mysql = require('mysql2');
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '155188306',
+  database: 'instituto'
+});
+
+connection.connect(err => {
+  if (err) console.error('Error de conexión:', err);
+  else console.log('Conectado a MySQL');
+});
+
+module.exports = { connection };
+
+3.2 Carpeta controllers
+
+- estudiantes.js: CRUD de estudiantes (obtenerEstudiantes, crearEstudiante, actualizarEstudiante, eliminarEstudiante)  
+- cursos.js: CRUD de cursos (obtenerCursos, crearCurso, actualizarCurso, eliminarCurso)  
+- inscripciones.js:  
+  - Crear inscripción validando que existan estudiante y curso por nombre.  
+  - Listar inscripciones con JOIN para mostrar:
+    - Nombre del estudiante  
+    - Email del estudiante  
+    - Nombre del curso  
+    - Descripción del curso  
+    - Fecha de inscripción  
+
+3.3 Carpeta routes
+
+- Cada controlador tiene su route correspondiente:
+  - estudiantes.js → rutas /estudiantes y /estudiante/:id  
+  - cursos.js → rutas /cursos y /curso/:id  
+  - inscripciones.js → rutas /inscripciones  
+
+3.4 Archivo principal index.js
+
+- Monta Express y las rutas.
+- Permite probar los endpoints con Thunder Client.
+
+const express = require("express");
+const estudiantesRoutes = require("./routes/estudiantes");
+const cursosRoutes = require("./routes/cursos");
+const inscripcionesRoutes = require("./routes/inscripciones");
+
+const app = express();
+app.use(express.json());
+
+app.use("/estudiantes", estudiantesRoutes);
+app.use("/cursos", cursosRoutes);
+app.use("/inscripciones", inscripcionesRoutes);
+
+app.listen(8000, () => console.log("Servidor corriendo en http://localhost:8000"));
+
+4️⃣ Flujo de datos
+
+1. Se envían datos al backend mediante los endpoints correspondientes.  
+2. Para inscripciones, el backend busca IDs reales de estudiante y curso por nombre antes de insertar.  
+3. Los datos se insertan en la tabla correspondiente (estudiantes, cursos, inscripciones).  
+4. Los endpoints permiten obtener los registros de cada tabla y las inscripciones con los JOIN realizados.
+
+5️⃣ Cómo probar el proyecto
+
+1. Levantar base de datos en MySQL Workbench.  
+2. Ejecutar backend:
+   nodemon index.js
+3. Probar endpoints con Thunder Client o Postman.
