@@ -24,7 +24,7 @@ export class CursosService {
    */
   static async obtenerPorId(id) {
     try {
-      return await apiService.get(`${API_CONFIG.ENDPOINTS.CURSO}/${id}`);
+      return await apiService.get(API_CONFIG.ENDPOINTS.CURSO.replace(':id', id));
     } catch (error) {
       throw new Error(`Error al obtener el curso con ID ${id}`);
     }
@@ -41,7 +41,7 @@ export class CursosService {
         throw new Error('El nombre del curso es requerido');
       }
 
-      return await apiService.post(API_CONFIG.ENDPOINTS.CURSO, datosCurso);
+      return await apiService.post(API_CONFIG.ENDPOINTS.CREAR_CURSO, datosCurso);
     } catch (error) {
       throw new Error('Error al crear el curso');
     }
@@ -55,7 +55,7 @@ export class CursosService {
    */
   static async actualizar(id, datosCurso) {
     try {
-      return await apiService.put(`${API_CONFIG.ENDPOINTS.CURSO}/${id}`, datosCurso);
+      return await apiService.put(API_CONFIG.ENDPOINTS.EDITAR_CURSO.replace(':id', id), datosCurso);
     } catch (error) {
       throw new Error(`Error al actualizar el curso con ID ${id}`);
     }
@@ -68,7 +68,7 @@ export class CursosService {
    */
   static async eliminar(id) {
     try {
-      return await apiService.delete(`${API_CONFIG.ENDPOINTS.CURSO}/${id}`);
+      return await apiService.delete(API_CONFIG.ENDPOINTS.ELIMINAR_CURSO.replace(':id', id));
     } catch (error) {
       throw new Error(`Error al eliminar el curso con ID ${id}`);
     }

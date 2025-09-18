@@ -1,0 +1,169 @@
+# Documentación Frontend - Sistema de Gestión Académica
+
+## 📦 Instalación de Dependencias
+
+### Dependencias Principales
+
+# Instalar TailwindCSS
+npm install tailwindcss @tailwindcss/vite
+
+# Instalar React Router
+npm install react-router-dom
+
+# Instalar CORS (para desarrollo)
+npm install cors
+
+
+
+## 🚀 Iniciar el Proyecto
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── estudiantes/     # Componentes específicos de estudiantes
+│   ├── modales/         # Componentes de modales
+│   ├── layout/          # Layout principal (header, footer)
+│   └── index.js         # Exportaciones centralizadas
+├── pages/               # Páginas principales de la aplicación
+├── services/            # Servicios para comunicación con API
+│   ├── apiService.js    # Servicio base para peticiones HTTP
+│   ├── estudiantesService.js # Servicio CRUD de estudiantes
+│   ├── cursosService.js # Servicio CRUD de cursos
+│   ├── inscripcionesService.js # Servicio CRUD de inscripciones
+│   └── index.js         # Exportaciones centralizadas
+├── endpoints/           # URLs centralizadas de la API
+│   └── endpoints.js     # Definición de todas las URLs
+├── hooks/               # Hooks personalizados de React
+└── constants/           # Constantes y configuraciones
+    └── config.js        # Configuración de API y endpoints
+```
+
+## 🔧 Servicios (API)
+
+### EstudiantesService
+- `obtenerTodos()` - Obtiene todos los estudiantes
+- `obtenerPorId(id)` - Obtiene un estudiante por ID
+- `crear(datos)` - Crea un nuevo estudiante
+- `actualizar(id, datos)` - Actualiza un estudiante
+- `eliminar(id)` - Elimina un estudiante
+- `obtenerInscripciones(id)` - Obtiene cursos del estudiante
+- `actualizarInscripciones(id, cursos)` - Actualiza inscripciones
+
+### CursosService
+- `obtenerTodos()` - Obtiene todos los cursos
+- `obtenerPorId(id)` - Obtiene un curso por ID
+- `crear(datos)` - Crea un nuevo curso
+- `actualizar(id, datos)` - Actualiza un curso
+- `eliminar(id)` - Elimina un curso
+
+### InscripcionesService
+- `obtenerTodas()` - Obtiene todas las inscripciones
+- `obtenerPorEstudiante(id)` - Obtiene inscripciones de un estudiante
+- `crear(datos)` - Crea una nueva inscripción
+- `actualizarPorEstudiante(id, cursos)` - Actualiza inscripciones de un estudiante
+- `eliminarPorEstudiante(id)` - Elimina todas las inscripciones de un estudiante
+
+## 🎣 Hooks Personalizados
+
+### useApi
+Hook para manejar estados de carga, error y datos de una petición API.
+
+### useApiList
+Hook especializado para listas con operaciones CRUD (crear, leer, actualizar, eliminar).
+
+
+## 🧩 Componentes Principales
+
+### TablaEstudiantes
+Tabla principal que muestra la lista de estudiantes con opciones para ver, editar y eliminar.
+
+### Páginas
+- `EstudiantesPage` - Página principal con lista de estudiantes
+- `AgregarEstudiantePage` - Formulario para crear estudiante
+- `EditarEstudiantePage` - Formulario para editar estudiante
+- `VerEstudiantePage` - Vista detallada del estudiante
+
+### Modales
+- `CrearEstudianteModal` - Modal para crear estudiante
+- `EditarEstudianteModal` - Modal para editar estudiante
+- `VerEstudianteModal` - Modal para ver detalles
+
+## 🎨 Estilos
+
+El proyecto utiliza **TailwindCSS** para el diseño:
+- Diseño responsivo
+- Componentes estilizados
+- Sistema de colores consistente
+- Utilidades de espaciado y tipografía
+
+## 🔗 Rutas
+
+```javascript
+/ - Página principal (lista de estudiantes)
+/agregar - Crear nuevo estudiante
+/editar/:id - Editar estudiante existente
+/ver/:id - Ver detalles del estudiante
+```
+
+## 📡 Configuración API
+
+El frontend se conecta al backend en `http://localhost:8000`
+
+### Arquitectura de URLs Centralizadas
+Todas las URLs están definidas en `src/endpoints/endpoints.js` y se importan en `src/constants/config.js` para uso en los servicios.
+
+### Endpoints utilizados:
+
+#### Estudiantes
+- `GET /estudiantes` - Lista de estudiantes
+- `GET /estudiante/:id` - Obtener estudiante por ID
+- `POST /estudiante` - Crear estudiante
+- `PUT /estudiante/:id` - Actualizar estudiante
+- `DELETE /estudiante/:id` - Eliminar estudiante
+
+#### Cursos
+- `GET /cursos` - Lista de cursos
+- `GET /curso/:id` - Obtener curso por ID
+- `POST /curso` - Crear curso
+- `PUT /curso/:id` - Actualizar curso
+- `DELETE /curso/:id` - Eliminar curso
+
+#### Inscripciones
+- `GET /inscripciones` - Lista de todas las inscripciones
+- `GET /inscripciones/estudiante/:id` - Inscripciones de un estudiante
+- `POST /inscripcion` - Crear inscripción
+- `PUT /inscripciones/estudiante/:id` - Actualizar inscripciones de estudiante
+
+### Configuración de Servicios
+Todos los servicios utilizan el patrón de URLs dinámicas con `.replace(':id', id)` para generar endpoints funcionales.
+
+## 🚨 Manejo de Errores
+
+- Validación de formularios en tiempo real
+- Mensajes de error descriptivos
+- Estados de carga durante peticiones
+- Confirmaciones para acciones destructivas
+
+## 💡 Características
+
+✅ **CRUD completo** de estudiantes, cursos e inscripciones
+✅ **URLs centralizadas** en endpoints.js para mejor mantenimiento
+✅ **Servicios modulares** con operaciones específicas para cada entidad
+✅ **Gestión completa de inscripciones** con servicios dedicados
+✅ **Hooks personalizados** para manejo de API (useApi, useApiList)
+✅ **Diseño responsivo** con TailwindCSS
+✅ **Navegación** con React Router
+✅ **Estados de carga** y manejo de errores
+✅ **Confirmaciones** para eliminaciones
+✅ **Arquitectura modular** y escalable
+✅ **Configuración centralizada** de API en config.js
+✅ **Patrón de URLs dinámicas** para endpoints parametrizados

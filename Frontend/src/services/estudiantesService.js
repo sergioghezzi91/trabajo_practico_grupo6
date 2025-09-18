@@ -24,7 +24,7 @@ export class EstudiantesService {
    */
   static async obtenerPorId(id) {
     try {
-      return await apiService.get(`${API_CONFIG.ENDPOINTS.ESTUDIANTE}/${id}`);
+      return await apiService.get(API_CONFIG.ENDPOINTS.ESTUDIANTE.replace(':id', id));
     } catch (error) {
       throw new Error(`Error al obtener el estudiante con ID ${id}`);
     }
@@ -42,7 +42,7 @@ export class EstudiantesService {
         throw new Error('Nombre y email son requeridos');
       }
 
-      return await apiService.post(API_CONFIG.ENDPOINTS.ESTUDIANTE, datosEstudiante);
+      return await apiService.post(API_CONFIG.ENDPOINTS.CREAR_ESTUDIANTE, datosEstudiante);
     } catch (error) {
       throw new Error('Error al crear el estudiante');
     }
@@ -56,7 +56,7 @@ export class EstudiantesService {
    */
   static async actualizar(id, datosEstudiante) {
     try {
-      return await apiService.put(`${API_CONFIG.ENDPOINTS.ESTUDIANTE}/${id}`, datosEstudiante);
+      return await apiService.put(API_CONFIG.ENDPOINTS.EDITAR_ESTUDIANTE.replace(':id', id), datosEstudiante);
     } catch (error) {
       throw new Error(`Error al actualizar el estudiante con ID ${id}`);
     }
@@ -69,7 +69,7 @@ export class EstudiantesService {
    */
   static async eliminar(id) {
     try {
-      return await apiService.delete(`${API_CONFIG.ENDPOINTS.ESTUDIANTE}/${id}`);
+      return await apiService.delete(API_CONFIG.ENDPOINTS.ELIMINAR_ESTUDIANTE.replace(':id', id));
     } catch (error) {
       throw new Error(`Error al eliminar el estudiante con ID ${id}`);
     }
@@ -82,7 +82,7 @@ export class EstudiantesService {
    */
   static async obtenerInscripciones(id) {
     try {
-      return await apiService.get(`${API_CONFIG.ENDPOINTS.INSCRIPCIONES}/estudiante/${id}`);
+      return await apiService.get(API_CONFIG.ENDPOINTS.INSCRIPCIONES_ESTUDIANTE.replace(':id', id));
     } catch (error) {
       // Si no hay inscripciones, retornar array vacío en lugar de error
       console.warn(`No se encontraron inscripciones para el estudiante ${id}`);
@@ -98,7 +98,7 @@ export class EstudiantesService {
    */
   static async actualizarInscripciones(id, cursos) {
     try {
-      return await apiService.put(`${API_CONFIG.ENDPOINTS.INSCRIPCIONES}/estudiante/${id}`, { cursos });
+      return await apiService.put(API_CONFIG.ENDPOINTS.ACTUALIZAR_INSCRIPCIONES.replace(':id', id), { cursos });
     } catch (error) {
       throw new Error(`Error al actualizar las inscripciones del estudiante ${id}`);
     }
