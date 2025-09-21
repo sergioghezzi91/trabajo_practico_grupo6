@@ -4,6 +4,7 @@ const {
     obtenerEstudiantes,
     obtenerEstudiantePorId,
     crearEstudiante,
+    actualizarEstudiante,
     eliminarEstudiante
 } = require('../controllers/estudiantes');
 
@@ -11,6 +12,7 @@ const {
 router.get('/estudiantes', obtenerEstudiantes);
 router.get('/estudiante/:id', obtenerEstudiantePorId);
 router.post('/estudiante', crearEstudiante);
+router.put('/estudiante/:id', actualizarEstudiante);
 router.delete('/estudiante/:id', eliminarEstudiante);
 
 module.exports = router;

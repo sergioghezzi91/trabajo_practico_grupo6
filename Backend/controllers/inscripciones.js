@@ -64,7 +64,57 @@ const obtenerInscripciones = (req, res) => {
   });
 };
 
+// Obtener inscripciones de un estudiante específico
+const obtenerInscripcionesPorEstudiante = (req, res) => {
+  const { id } = req.params;
+  const query = `
+    SELECT c.id_curso, c.nombre, c.descripcion
+    FROM inscripciones i
+    JOIN cursos c ON i.id_curso = c.id_curso
+    WHERE i.id_estudiante = ?
+  `;
+  connection.query(query, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: "Error al obtener inscripciones del estudiante" });
+    res.json(results);
+  });
+};
+
+// Actualizar inscripciones de un estudiante (eliminar todas y crear nuevas)
+const actualizarInscripcionesEstudiante = (req, res) => {
+  const { id } = req.params;
+  const { cursos } = req.body; // Array de IDs de cursos
+
+  // Primero eliminar todas las inscripciones existentes del estudiante
+  connection.query(
+    "DELETE FROM inscripciones WHERE id_estudiante = ?",
+    [id],
+    (err) => {
+      if (err) return res.status(500).json({ error: "Error al eliminar inscripciones anteriores" });
+
+      // Si no hay cursos seleccionados, solo eliminar
+      if (!cursos || cursos.length === 0) {
+        return res.json({ message: "Inscripciones actualizadas" });
+      }
+
+      // Insertar las nuevas inscripciones
+      const fecha = new Date().toISOString().split('T')[0]; // Fecha actual
+      const values = cursos.map(cursoId => [id, cursoId, fecha]);
+      
+      connection.query(
+        "INSERT INTO inscripciones (id_estudiante, id_curso, fecha_inscripcion) VALUES ?",
+        [values],
+        (err) => {
+          if (err) return res.status(500).json({ error: "Error al crear nuevas inscripciones" });
+          res.json({ message: "Inscripciones actualizadas correctamente" });
+        }
+      );
+    }
+  );
+};
+
 module.exports = {
   crearInscripcion,
-  obtenerInscripciones
+  obtenerInscripciones,
+  obtenerInscripcionesPorEstudiante,
+  actualizarInscripcionesEstudiante
 };
